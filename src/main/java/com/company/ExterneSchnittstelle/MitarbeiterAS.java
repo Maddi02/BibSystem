@@ -46,6 +46,10 @@ public class MitarbeiterAS {
         @Override
         public void actionPerformed(ActionEvent e) {
 
+            BenutzerkontoModifizierenAAS benutzerkontoModifizierenAAS = new BenutzerkontoModifizierenAAS();
+            benutzerkontoModifizierenAAS.öffne();
+            MitareiterFenster.setContentPane(BenutzerkontoModifizierenAAS.getjPanel());
+            SwingUtilities.updateComponentTreeUI(MitareiterFenster);
 
         }
     };

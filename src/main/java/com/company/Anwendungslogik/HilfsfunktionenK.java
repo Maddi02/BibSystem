@@ -1,15 +1,11 @@
 package com.company.Anwendungslogik;
 
-import com.company.Entiätsklassen.AuthentifzierungEK;
-import com.company.Entiätsklassen.BuecherbestandEK;
+import com.company.Entiätsklassen.*;
 import com.company.ExterneSchnittstelle.Operation;
 
 
 import javax.persistence.*;
 import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +14,7 @@ public class HilfsfunktionenK implements Operation {
     EntityManager entityManager = entityManagerFactory.createEntityManager();
     EntityTransaction transaction = entityManager.getTransaction();
     private static String role = "";
+    static int benutzerId;
 
     @Override
     public boolean authentifizierung(String user, String password) {
@@ -32,6 +29,7 @@ public class HilfsfunktionenK implements Operation {
 
         if (authentifzierungEKList.get(0).getUsername().equals(user) && authentifzierungEKList.get(0).getPassword().equals(password)) {
             role = authentifzierungEKList.get(0).getRole();
+            benutzerId = authentifzierungEKList.get(0).getId();
             return true;
         } else {
             return false;
@@ -69,32 +67,33 @@ public class HilfsfunktionenK implements Operation {
     }
 
     @Override
-    public boolean buchHinzufuegen(String Buchname, String Author, int Erscheinungsjahr, String ISBN, int Anzahl, boolean reserviert) { try {
+    public boolean buchHinzufuegen(String Buchname, String Author, int Erscheinungsjahr, String ISBN, int Anzahl, boolean reserviert) {
+        try {
 
-        transaction.begin();
-        BuecherbestandEK buecherbestandEK = new BuecherbestandEK();
-        buecherbestandEK.setId(getMaxPublicKeyBücher() +1 );
-        buecherbestandEK.setBuchname(Buchname);
-        buecherbestandEK.setAuthor(Author);
-        buecherbestandEK.setErscheinungsjahr(Erscheinungsjahr);
-        buecherbestandEK.setIsbn(ISBN);
-        buecherbestandEK.setAnzahl(Anzahl);
-        buecherbestandEK.setReserviert(reserviert);
-        buecherbestandEK.setErscheinungsjahr(Erscheinungsjahr);
-        entityManager.persist(buecherbestandEK);
-        transaction.commit();
+            transaction.begin();
+            BuecherbestandEK buecherbestandEK = new BuecherbestandEK();
+            buecherbestandEK.setId(getMaxPublicKeyBücher() + 1);
+            buecherbestandEK.setBuchname(Buchname);
+            buecherbestandEK.setAuthor(Author);
+            buecherbestandEK.setErscheinungsjahr(Erscheinungsjahr);
+            buecherbestandEK.setIsbn(ISBN);
+            buecherbestandEK.setAnzahl(Anzahl);
+            buecherbestandEK.setReserviert(reserviert);
+            buecherbestandEK.setErscheinungsjahr(Erscheinungsjahr);
+            entityManager.persist(buecherbestandEK);
+            transaction.commit();
 
-    } catch (Exception e) {
-        System.out.println(e.getStackTrace());
-        return false;
-    } finally {
-        if (transaction.isActive()) {
-            transaction.rollback();
+        } catch (Exception e) {
+            System.out.println(e.getStackTrace());
+            return false;
+        } finally {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+            entityManager.close();
+            entityManagerFactory.close();
+
         }
-        entityManager.close();
-        entityManagerFactory.close();
-
-    }
         return true;
     }
 
@@ -110,39 +109,80 @@ public class HilfsfunktionenK implements Operation {
         return true;
     }
 
-    public JComboBox getAllBenutzer()
-    {
+    @Override
+    public JComboBox showAllBooks() {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        Query query = entityManager.createQuery("SELECT e FROM BuecherbestandEK e");
+        List<BuecherbestandEK> bücherListe = query.getResultList();
+        List<String> stingBücherliste = new ArrayList<>();
+
+        JComboBox jComboBox = new JComboBox();
+        for (int i = 0; i < bücherListe.size(); i++) {
+            stingBücherliste.add("Buchname: " + bücherListe.get(i).getBuchname() + " Author: " + bücherListe.get(i).getAuthor() + " Erscheinungsjahr " + bücherListe.get(i).getErscheinungsjahr()   + "Erscheinungsjahr " + bücherListe.get(i).getErscheinungsjahr() + "\n"
+                    + "ISBN " + bücherListe.get(i).getIsbn() + "\n"
+                    + "Anzahl " + bücherListe.get(i).getAnzahl() + "\n"
+                    + "ID " +  bücherListe.get(i).getId() + "\n");
+        }
+
+        for (int i = 0; i < stingBücherliste.size(); i++) {
+            jComboBox.addItem(stingBücherliste.get(i));
+        }
+        return jComboBox;
+
+    }
+
+    @Override
+    public String showAllBooksInfo() {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        Query query = entityManager.createQuery("SELECT e FROM BuecherbestandEK e");
+        List<BuecherbestandEK> bücherListe = query.getResultList();
+        String allBookInfos = "Autor ";
+        for (int i = 0; i < bücherListe.size(); i++) {
+            allBookInfos = allBookInfos + bücherListe.get(i).getAuthor() + "\n"
+                    + "Buchname " + bücherListe.get(i).getBuchname() + "\n"
+                    + "Erscheinungsjahr " + bücherListe.get(i).getErscheinungsjahr() + "\n"
+                    + "ISBN " + bücherListe.get(i).getIsbn() + "\n"
+                    + "Anzahl " + bücherListe.get(i).getAnzahl() + "\n";
+            if (bücherListe.get(i).isReserviert()) {
+                allBookInfos = allBookInfos + "reserviert JA " + "\n";
+            } else {
+                allBookInfos = allBookInfos + "reserviert Nein " + "\n";
+            }
+            allBookInfos = allBookInfos + "--------------------\n";
+            allBookInfos = allBookInfos + "Author ";
+
+        }
+
+        return allBookInfos;
+    }
+
+    public JComboBox getAllBenutzer() {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         Query query = entityManager.createQuery("SELECT e FROM AuthentifzierungEK e");
         List<AuthentifzierungEK> result = query.getResultList();
         JComboBox jComboBox = new JComboBox();
         List<String> allUser = new ArrayList<String>();
-        for(int i = 0 ; i < result.size(); i++)
-        {
+        for (int i = 0; i < result.size(); i++) {
             allUser.add(result.get(i).getUsername());
             System.out.println(result.get(i).getUsername());
         }
-        for(int i = 0; i < allUser.size(); i++)
-        {
+        for (int i = 0; i < allUser.size(); i++) {
             jComboBox.addItem(allUser.get(i));
         }
 
         return jComboBox;
     }
 
-    public JComboBox getAllBücher()
-    {
+    public JComboBox getAllBücher(String selectedItem) {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         Query query = entityManager.createQuery("SELECT e FROM BuecherbestandEK e");
         List<BuecherbestandEK> result = query.getResultList();
         JComboBox jComboBox = new JComboBox();
         List<String> allUser = new ArrayList<String>();
-        for(int i = 0 ; i < result.size(); i++)
-        {
+        for (int i = 0; i < result.size(); i++) {
             allUser.add(result.get(i).getBuchname());
         }
-        for(int i = 0; i < allUser.size(); i++)
-        {
+        for (int i = 0; i < allUser.size(); i++) {
             jComboBox.addItem(allUser.get(i));
         }
 
@@ -154,14 +194,15 @@ public class HilfsfunktionenK implements Operation {
         return role;
     }
 
-    private int getMaxPublicKeyAuthenifizerung(){
+    private int getMaxPublicKeyAuthenifizerung() {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         Query query = entityManager.createQuery("SELECT MAX(e.id) FROM AuthentifzierungEK e ");
         List<Integer> result = query.getResultList();
         int max = result.get(0);
         return max;
     }
-    private int getMaxPublicKeyBücher(){
+
+    private int getMaxPublicKeyBücher() {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         Query query = entityManager.createQuery("SELECT MAX(e.id) FROM BuecherbestandEK e ");
         List<Integer> result = query.getResultList();
@@ -169,5 +210,153 @@ public class HilfsfunktionenK implements Operation {
         return max;
     }
 
+    private int getMaxPublicKeyBAusleihkonto()
+    {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        Query query = entityManager.createQuery("SELECT MAX(e.id) FROM AusleihkontoEK e ");
+        List<Integer> result = query.getResultList();
+        int max = result.get(0);
+        return max;
+    }
 
+    @Override
+    public boolean setAusleihkonto(int id, int buchid, int mahnungId ,  int verlustId, boolean rückgabe) {
+        try {
+
+            transaction.begin();
+            AusleihkontoEK ausleihkontoEK = new AusleihkontoEK();
+            ausleihkontoEK.setId(getMaxPublicKeyBAusleihkonto() +1);
+            ausleihkontoEK.setAusleihbaresMediumId(buchid);
+            ausleihkontoEK.setMahnungId(mahnungId);
+            ausleihkontoEK.setVerlustId(verlustId);
+            ausleihkontoEK.setRückgabe(rückgabe);
+            ausleihkontoEK.setKundenId(id);
+            entityManager.persist(ausleihkontoEK);
+            transaction.commit();
+
+        } catch (Exception e) {
+            System.out.println(e.getStackTrace());
+            return false;
+        } finally {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+            entityManager.close();
+            entityManagerFactory.close();
+
+        }
+        return true;
+    }
+
+    public int getMediumId(String text)
+    {
+        int i = text.indexOf("ID");
+        String id = "";
+        for(int k = i +3 ; k < text.length() ; k++)
+        {
+            if(text.charAt(k) != ' ' && text.charAt(k) != '\n') {
+                id = id + text.charAt(k);
+            }
+        }
+        System.out.println(id.length());
+       int buchID =   Integer.valueOf(id) ;
+       return buchID;
+    }
+
+    public String getBuchname (int id)
+    {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        entityManager.getTransaction().begin();
+        Query query = entityManager.createQuery("Select e FROM BuecherbestandEK e WHERE e.id = :id ");
+        query.setParameter("id", id);
+        List<BuecherbestandEK> result = query.getResultList();
+        return result.get(0).getBuchname();
+    }
+
+    public String getMahung(int id)
+    {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        entityManager.getTransaction().begin();
+        Query query = entityManager.createQuery("Select e FROM MahnungEK e WHERE e.id = :id ");
+        query.setParameter("id", id);
+        List<MahnungEK> result = query.getResultList();
+        return result.get(0).getBeschreibung();
+    }
+
+    public String getVerlust(int id)
+    {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        entityManager.getTransaction().begin();
+        Query query = entityManager.createQuery("Select e FROM VerlustmeldungEK e WHERE e.id = :id ");
+        query.setParameter("id", id);
+        List<VerlustmeldungEK> result = query.getResultList();
+        return result.get(0).getBeschreibung();
+    }
+    public boolean getRückgabe(int id)
+    {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        entityManager.getTransaction().begin();
+        Query query = entityManager.createQuery("Select e FROM AusleihkontoEK e WHERE e.id = :id ");
+        query.setParameter("id", id);
+        List<AusleihkontoEK> result = query.getResultList();
+        return result.get(0).isRückgabe();
+    }
+
+
+
+
+    public String getAusleihkontenAuskunft(int id)
+    {
+        String text = "\n";
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        entityManager.getTransaction().begin();
+        Query query = entityManager.createQuery("Select e FROM AusleihkontoEK e WHERE e.kundenId = :id ");
+        query.setParameter("id", id);
+         text = "Buchname: ";
+        List<AusleihkontoEK> result = query.getResultList();
+        for(int i = 0; i < result.size(); i++)
+        {
+            text = text + getBuchname(result.get(i).getAusleihbaresMediumId()) +
+            " Verlustbemerkung: " + getVerlust(result.get(i).getVerlustId()) +
+            " Mahnungbemerkung: " + getMahung(result.get(i).getMahnungId()) +
+            " Reserviert: " + result.get(i).isRückgabe()+ "\n-------------------\n";
+        }
+        return text;
+    }
+
+    public String[] getAusgelieheneMedienFortStudent(int id)
+    {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        entityManager.getTransaction().begin();
+        Query query = entityManager.createQuery("Select e FROM AusleihkontoEK e WHERE e.kundenId = :id ");
+        query.setParameter("id", id);
+        List<AusleihkontoEK> list = query.getResultList();
+        List<String> name = new ArrayList<>();
+        for(int i = 0; i < list.size(); i++)
+        {
+            int  idBuch = (list.get(i).getAusleihbaresMediumId());
+            name.add(getBuchname(idBuch));
+        }
+        String[] a = new String[name.size()];
+        for(int i = 0; i < list.size(); i++)
+        {
+            a[i] = name.get(i);
+        }
+        return a;
+
+    }
+
+    public int getIDFromNutzer(String nutzer)
+    {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        entityManager.getTransaction().begin();
+        Query query = entityManager.createQuery("Select e FROM AuthentifzierungEK e WHERE e.username = :id ");
+        query.setParameter("id", nutzer);
+        List<AuthentifzierungEK> list = query.getResultList();
+        return list.get(0).getId();
+    }
+
+    public  static int getLoginID(){
+        return benutzerId;
+    }
 }

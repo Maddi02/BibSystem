@@ -74,6 +74,11 @@ public class LoginASS {
                         frame.dispose();
                         new MitarbeiterAS().setDropDownMitarbeiter();
                     }
+                    if(HilfsfunktionenK.getRole().equals("Student"))
+                    {
+                        frame.dispose();
+                        new StudentAS().öffne();
+                    }
                 } else {
                     System.out.println("Login nicht erfolgreich");
                 }

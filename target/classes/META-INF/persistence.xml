@@ -10,6 +10,7 @@
         <class>com.company.Entiätsklassen.VerlustmeldungEK</class>
         <class>com.company.Entiätsklassen.BuecherbestandEK</class>
         <class>com.company.Entiätsklassen.BuecherbestandEK</class>
+        <class>com.company.Entiätsklassen.MahnungEK</class>
 
         <properties>
             <property name="hibernate.connection.url" value="jdbc:h2:tcp://localhost/~/test"/>
