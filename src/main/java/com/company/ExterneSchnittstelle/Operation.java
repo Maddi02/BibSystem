@@ -18,4 +18,10 @@ public interface Operation {
 
     boolean setAusleihkonto(int id , int buchid, int mahnungId, int verlustId, boolean rückgabe);
 
+    JComboBox getAllMahnung();
+
+    JComboBox getAllVerluste();
+
+
+
 }

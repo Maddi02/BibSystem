@@ -1,10 +1,8 @@
 package com.company.ExterneSchnittstelle;
 
 import com.company.Anwendungslogik.HilfsfunktionenK;
-import com.sun.deploy.net.MessageHeader;
 
 import javax.swing.*;
-import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -53,7 +51,7 @@ public class BuchAusleihenAAS extends JFrame {
         jbuttonAusleihen.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int buchid = hilfsfunktionen.getMediumId(test[0]);
+                int buchid = hilfsfunktionen.getMediumIdSelectMedium(test[0]);
 
                 int benutzerID = HilfsfunktionenK.getLoginID();
                 hilfsfunktionen.setAusleihkonto(benutzerID,buchid,0,0,false);

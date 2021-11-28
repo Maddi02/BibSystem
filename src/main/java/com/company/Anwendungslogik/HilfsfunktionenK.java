@@ -248,7 +248,59 @@ public class HilfsfunktionenK implements Operation {
         return true;
     }
 
-    public int getMediumId(String text)
+    public boolean upDateKonto(int id, int buchid, int mahnungId, int verlustId, boolean rückgab)
+    {
+        System.out.println("Benutzer = " + id);
+        System.out.println("Buch= " +buchid);
+        System.out.println("Mahnung= " +mahnungId);
+        System.out.println("verlust= " +verlustId);
+        System.out.println("rückgabe= " +rückgab);
+        entityManager.getTransaction().begin();
+        Query query = entityManager.createQuery("UPDATE AusleihkontoEK e SET  e.mahnungId = :mahnungId, e.verlustId = :verlustId, e.rückgabe = :rüchgabe WHERE e.kundenId = :kudenID AND e.ausleihbaresMediumId =:ausleihbaresMediumId " );
+        query.setParameter("kudenID" ,id );
+        query.setParameter("ausleihbaresMediumId" ,buchid );
+        query.setParameter("mahnungId" ,mahnungId );
+        query.setParameter("verlustId" ,verlustId );
+        query.setParameter("rüchgabe" ,rückgab);
+        query.executeUpdate();
+        entityManager.getTransaction().commit();
+        return false;
+    }
+
+    @Override
+    public JComboBox getAllMahnung() {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        Query query = entityManager.createQuery("SELECT e FROM MahnungEK e");
+        List<MahnungEK> result = query.getResultList();
+        JComboBox jComboBox = new JComboBox();
+        List<String> allMahnungen = new ArrayList<String>();
+        for (int i = 0; i < result.size(); i++) {
+            allMahnungen.add(result.get(i).getBeschreibung());
+        }
+        for (int i = 0; i < allMahnungen.size(); i++) {
+            jComboBox.addItem(allMahnungen.get(i));
+        }
+
+        return jComboBox;
+    }
+
+    @Override
+    public JComboBox getAllVerluste() {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        Query query = entityManager.createQuery("SELECT e FROM VerlustmeldungEK e");
+        List<VerlustmeldungEK> result = query.getResultList();
+        JComboBox jComboBox = new JComboBox();
+        List<String> allVerluste = new ArrayList<String>();
+        for (int i = 0; i < result.size(); i++) {
+            allVerluste.add(result.get(i).getBeschreibung());
+        }
+        for (int i = 0; i < allVerluste.size(); i++) {
+            jComboBox.addItem(allVerluste.get(i));
+        }
+        return jComboBox;
+    }
+
+    public int getMediumIdSelectMedium(String text)
     {
         int i = text.indexOf("ID");
         String id = "";
@@ -262,6 +314,47 @@ public class HilfsfunktionenK implements Operation {
        int buchID =   Integer.valueOf(id) ;
        return buchID;
     }
+
+    public int getMediumId(String mediumId) {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        Query query = entityManager.createQuery("SELECT e FROM BuecherbestandEK e WHERE e.buchname =: username");
+        query.setParameter("username",mediumId);
+        List<BuecherbestandEK> result = query.getResultList();
+        return  result.get(0).getId();
+    }
+
+    public int getBenutzerID(String user)
+    {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        Query query = entityManager.createQuery("SELECT e FROM AuthentifzierungEK e WHERE e.username =: username");
+        query.setParameter("username",user);
+        List<AuthentifzierungEK> result = query.getResultList();
+        return  result.get(0).getId();
+    }
+
+    public int getMahungID(String Mahnug)
+    {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        Query query = entityManager.createQuery("SELECT e FROM MahnungEK e WHERE e.beschreibung =: mahung");
+        query.setParameter("mahung",Mahnug);
+        List<MahnungEK> result = query.getResultList();
+        return  result.get(0).getMahnungid();
+    }
+
+    public int getVerlustID(String Verlust)
+    {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        Query query = entityManager.createQuery("SELECT e FROM MahnungEK e WHERE e.beschreibung =: verlust");
+        query.setParameter("verlust",Verlust);
+        List<MahnungEK> result = query.getResultList();
+        return  result.get(0).getMahnungid();
+    }
+
+
+
+
+
+
 
     public String getBuchname (int id)
     {
