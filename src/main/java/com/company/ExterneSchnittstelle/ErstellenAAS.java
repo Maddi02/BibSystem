@@ -54,7 +54,15 @@ public class ErstellenAAS {
         OK.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                hilfsfunktionen.benutzerAnlegen(username.getText().toString(), passwort.getText().toString(), Role);
+
+                JDialogSetUP jDialogSetUP = new JDialogSetUP();
+                if(hilfsfunktionen.benutzerAnlegen(username.getText().toString(), passwort.getText().toString(), Role))
+                {
+                    jDialogSetUP.setUpADialog("Erstellung war erflogreich", "SUCCESS!!!").pack();
+                }
+                else{
+                    jDialogSetUP.setUpADialog("Erstellung war nicht erflogreich", "FAIL!!!").pack();
+                }
             }
         });
     }

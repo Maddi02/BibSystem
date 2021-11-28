@@ -7,15 +7,19 @@ import java.awt.event.KeyEvent;
 
 public class MitarbeiterAS {
 
-    String role= "";
+    String role = "";
     JFrame MitareiterFenster = new JFrame("Bibliothek Verwaltung - Mitarbeiter");
     JToolBar jToolBar = new JToolBar();
     JPanel constructorPanel = new JPanel();
+    BucherstellenAAS buchErstellen = new BucherstellenAAS();
+    ErstellenAAS erstellen = new ErstellenAAS();
+    BenutzerLöschenASS benutzerLöschen = new BenutzerLöschenASS();
+    BenutzerkontoModifizierenAAS benutzerkontoModifizierenAAS = new BenutzerkontoModifizierenAAS();
 
     Action benutzerErstellenAction = new AbstractAction("Benutzer erstellen") {
         public void actionPerformed(ActionEvent e) {
-        ErstellenAAS erstellen = new ErstellenAAS();
-        erstellen.öffne();
+
+            erstellen.öffne();
             MitareiterFenster.setContentPane(erstellen.getPanel());
             SwingUtilities.updateComponentTreeUI(MitareiterFenster);
         }
@@ -24,8 +28,6 @@ public class MitarbeiterAS {
     Action buchErstellenAction = new AbstractAction("Buch hinzufügen") {
         @Override
         public void actionPerformed(ActionEvent e) {
-
-            BucherstellenAAS buchErstellen = new BucherstellenAAS();
             buchErstellen.öffnen();
             MitareiterFenster.setContentPane(buchErstellen.getPanel());
             SwingUtilities.updateComponentTreeUI(MitareiterFenster);
@@ -35,9 +37,9 @@ public class MitarbeiterAS {
     Action benutzerLöschenAction = new AbstractAction("Benutzer löschen") {
         @Override
         public void actionPerformed(ActionEvent e) {
-           BenutzerLöschenASS benutzerLöschen =  new BenutzerLöschenASS();
-           benutzerLöschen.öffnen();
-           MitareiterFenster.setContentPane(benutzerLöschen.getPanel());
+
+            benutzerLöschen.öffnen();
+            MitareiterFenster.setContentPane(benutzerLöschen.getPanel());
             SwingUtilities.updateComponentTreeUI(MitareiterFenster);
         }
     };
@@ -46,7 +48,7 @@ public class MitarbeiterAS {
         @Override
         public void actionPerformed(ActionEvent e) {
 
-            BenutzerkontoModifizierenAAS benutzerkontoModifizierenAAS = new BenutzerkontoModifizierenAAS();
+
             benutzerkontoModifizierenAAS.öffne();
             MitareiterFenster.setContentPane(BenutzerkontoModifizierenAAS.getjPanel());
             SwingUtilities.updateComponentTreeUI(MitareiterFenster);
@@ -54,10 +56,9 @@ public class MitarbeiterAS {
         }
     };
 
-    public void setToolbar()
-    {
-        JButton buchErstellen =  new JButton(buchErstellenAction);
-        JButton benutzerErstellen =  new JButton(benutzerErstellenAction);
+    public void setToolbar() {
+        JButton buchErstellen = new JButton(buchErstellenAction);
+        JButton benutzerErstellen = new JButton(benutzerErstellenAction);
         JButton benutzerLöschen = new JButton(benutzerLöschenAction);
         JButton benutzerAusleikontoModizieren = new JButton(benutzerAusleihkontoModifizierenAction);
 
@@ -69,16 +70,15 @@ public class MitarbeiterAS {
 
         MitareiterFenster.setContentPane(constructorPanel);
         MitareiterFenster.getContentPane().setLayout(new BorderLayout());
-        MitareiterFenster.getContentPane().add(jToolBar,BorderLayout.NORTH);
+        MitareiterFenster.getContentPane().add(jToolBar, BorderLayout.NORTH);
     }
 
-    public void setDropDownMitarbeiter()
-    {
+    public void setDropDownMitarbeiter() {
         setToolbar();
-        KeyStroke ctrlN = KeyStroke.getKeyStroke(KeyEvent.VK_N, Toolkit.getDefaultToolkit ().getMenuShortcutKeyMask());
-        KeyStroke ctrlE = KeyStroke.getKeyStroke(KeyEvent.VK_E, Toolkit.getDefaultToolkit ().getMenuShortcutKeyMask());
-        KeyStroke ctrlD = KeyStroke.getKeyStroke(KeyEvent.VK_D, Toolkit.getDefaultToolkit ().getMenuShortcutKeyMask());
-        KeyStroke ctrlF = KeyStroke.getKeyStroke(KeyEvent.VK_F, Toolkit.getDefaultToolkit ().getMenuShortcutKeyMask());
+        KeyStroke ctrlN = KeyStroke.getKeyStroke(KeyEvent.VK_N, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask());
+        KeyStroke ctrlE = KeyStroke.getKeyStroke(KeyEvent.VK_E, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask());
+        KeyStroke ctrlD = KeyStroke.getKeyStroke(KeyEvent.VK_D, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask());
+        KeyStroke ctrlF = KeyStroke.getKeyStroke(KeyEvent.VK_F, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask());
 
         final JMenuBar jMenuBar = new JMenuBar();
         JMenu Actionen = new JMenu("Aktionen");
@@ -113,8 +113,7 @@ public class MitarbeiterAS {
     }
 
 
-    public JPanel getPanel()
-    {
+    public JPanel getPanel() {
         return constructorPanel;
     }
 

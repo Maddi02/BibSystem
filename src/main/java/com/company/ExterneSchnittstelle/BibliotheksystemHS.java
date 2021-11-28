@@ -54,14 +54,13 @@ public class BibliotheksystemHS extends JFrame {
                 System.exit(0);
             }
         });
-
-
-
-
-
-
         frame.add(panel);
-        frame.pack();
+        makeFrameFullSize(frame);
         frame.setVisible(true);
+    }
+
+    private void makeFrameFullSize(JFrame aFrame) {
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        aFrame.setSize(screenSize.width, screenSize.height);
     }
 }

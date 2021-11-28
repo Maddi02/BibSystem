@@ -12,6 +12,7 @@ public class BuchAusleihenAAS extends JFrame {
     static JPanel jPanel = new JPanel(new GridBagLayout());
     HilfsfunktionenK hilfsfunktionen = new HilfsfunktionenK();
     private static JTextArea jTextArea = new JTextArea();
+    JDialogSetUP jDialogSetUP = new JDialogSetUP();
     private static JScrollPane scrollPane;
     int kundenId;
     int buchID;
@@ -63,7 +64,13 @@ public class BuchAusleihenAAS extends JFrame {
                  buchid[0] = hilfsfunktionen.getMediumIdSelectMedium(test[0]);
 
                 int benutzerID = HilfsfunktionenK.getLoginID();
-                hilfsfunktionen.setAusleihkonto(benutzerID, buchid[0],0,0,false);
+                if(hilfsfunktionen.setAusleihkonto(benutzerID, buchid[0],0,0,false))
+                {
+                    jDialogSetUP.setUpADialog("Aktion war erflogreich", "SUCCESS!!!").pack();
+                }
+                else{
+                    jDialogSetUP.setUpADialog("Aktion war nicht erflogreich", "FAIL!!!").pack();
+                }
             }
         });
 

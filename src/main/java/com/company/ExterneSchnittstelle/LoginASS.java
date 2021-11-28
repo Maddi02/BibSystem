@@ -25,41 +25,41 @@ public class LoginASS {
 
         GridBagConstraints a = new GridBagConstraints();
         a.gridy = 0;
-        a.gridx = 0;
+        a.gridx = 1;
         a.anchor = GridBagConstraints.CENTER;
         jPanel.add(new JLabel("Benutzername"), a);
 
 
         GridBagConstraints b = new GridBagConstraints();
-        b.gridy = 0;
+        b.gridy = 1;
         b.gridx = 1;
         b.anchor = GridBagConstraints.CENTER;
         b.weightx = 5;
         jPanel.add(username, b);
 
         GridBagConstraints c = new GridBagConstraints();
-        c.gridy = 1;
-        c.gridx = 0;
+        c.gridy = 2;
+        c.gridx = 1;
         c.anchor = GridBagConstraints.CENTER;
         jPanel.add(new JLabel("Passwort"), c);
 
         GridBagConstraints d = new GridBagConstraints();
-        d.gridy = 1;
+        d.gridy = 3;
         d.gridx = 1;
         d.weightx = 5;
         d.anchor = GridBagConstraints.CENTER;
         jPanel.add(password, d);
 
         GridBagConstraints e = new GridBagConstraints();
-        e.gridy = 2;
-        e.gridx = 0;
+        e.gridy = 4;
+        e.gridx = 1;
         e.weightx = 5;
         e.anchor = GridBagConstraints.CENTER;
         jPanel.add(login, e);
 
 
         GridBagConstraints f = new GridBagConstraints();
-        f.gridy = 2;
+        f.gridy = 5;
         f.gridx = 1;
         f.weightx = 5;
         f.anchor = GridBagConstraints.CENTER;
@@ -93,7 +93,14 @@ public class LoginASS {
             }
         });
         frame.add(jPanel);
-        frame.pack();
+        makeFrameFullSize(frame);
         frame.setVisible(true);
     }
+
+    private void makeFrameFullSize(JFrame aFrame) {
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        aFrame.setSize(screenSize.width, screenSize.height);
+    }
+
+
 }

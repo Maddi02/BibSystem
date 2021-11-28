@@ -35,8 +35,15 @@ public class BenutzerLöschenASS {
         final JComboBox finalJComboBox = jComboBox;
         löschen.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                JDialogSetUP jDialogSetUP = new JDialogSetUP();
                 String username = finalJComboBox.getSelectedItem().toString();
-                hilfsfunktionen.benutzerLöschen(username);
+               if(hilfsfunktionen.benutzerLöschen(username))
+               {
+                   jDialogSetUP.setUpADialog("Löschen war erflogreich", "SUCCESS!!!").pack();
+               }
+               else{
+                   jDialogSetUP.setUpADialog("Löschen war nicht erflogreich", "FAIL!!!").pack();
+               }
             }
         });
     }

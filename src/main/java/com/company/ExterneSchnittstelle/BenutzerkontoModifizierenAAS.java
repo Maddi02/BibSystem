@@ -165,6 +165,7 @@ public class BenutzerkontoModifizierenAAS extends JFrame {
 
             @Override
             public void actionPerformed(ActionEvent e) {
+                JDialogSetUP jDialogSetUP = new JDialogSetUP();
                 if(jRadioButtonPasst.isSelected())
                 {
                     System.out.println("JOOO");
@@ -175,7 +176,13 @@ public class BenutzerkontoModifizierenAAS extends JFrame {
                             "");
                     rückgabe = false;
                 }
-                hilfsfunktionen.upDateKonto(hilfsfunktionen.getBenutzerID(ausgewälterNutzer[0]), hilfsfunktionen.getMediumId(ausgewähltesMedium[0]) , hilfsfunktionen.getMahungID(ausgewähltMahnung[0]), hilfsfunktionen.getVerlustID(ausgewählterVerlust[0]),rückgabe);
+                if(hilfsfunktionen.upDateKonto(hilfsfunktionen.getBenutzerID(ausgewälterNutzer[0]), hilfsfunktionen.getMediumId(ausgewähltesMedium[0]) , hilfsfunktionen.getMahungID(ausgewähltMahnung[0]), hilfsfunktionen.getVerlustID(ausgewählterVerlust[0]),rückgabe))
+                {
+                    jDialogSetUP.setUpADialog("Modifizierung war erflogreich", "SUCCESS!!!").pack();
+                }
+                else {
+                    jDialogSetUP.setUpADialog("Modifizierung war nicht erflogreich", "FAIL!!!").pack();
+                }
             }
         });
     }

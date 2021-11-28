@@ -57,8 +57,16 @@ public class BucherstellenAAS {
         OK.addActionListener(new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            hilfsfunktionen.buchHinzufuegen(buchname.getText(),autor.getText(),Integer.valueOf(erscheinungsjahr.getText() ),
-                    isbn.getText().toString(), Integer.valueOf(anzahl.getText())  , Boolean.valueOf(reserviert.getText()));
+            JDialogSetUP jDialogSetUP = new JDialogSetUP();
+            if(hilfsfunktionen.buchHinzufuegen(buchname.getText(),autor.getText(),Integer.valueOf(erscheinungsjahr.getText() ),
+                    isbn.getText().toString(), Integer.valueOf(anzahl.getText())  , Boolean.valueOf(reserviert.getText())))
+            {
+
+                jDialogSetUP.setUpADialog("Erstellung war erflogreich", "SUCCESS!!!").pack();
+            }
+            else{
+                jDialogSetUP.setUpADialog("Erstellung war nicht erflogreich", "FAIL!!!").pack();
+            }
         }
     });
 
