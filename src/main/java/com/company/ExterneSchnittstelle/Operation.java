@@ -22,6 +22,7 @@ public interface Operation {
 
     JComboBox getAllVerluste();
 
+    boolean setVerlängerung(int id);
 
 
 }

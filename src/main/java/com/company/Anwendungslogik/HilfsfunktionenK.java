@@ -221,31 +221,38 @@ public class HilfsfunktionenK implements Operation {
 
     @Override
     public boolean setAusleihkonto(int id, int buchid, int mahnungId ,  int verlustId, boolean rückgabe) {
-        try {
 
-            transaction.begin();
-            AusleihkontoEK ausleihkontoEK = new AusleihkontoEK();
-            ausleihkontoEK.setId(getMaxPublicKeyBAusleihkonto() +1);
-            ausleihkontoEK.setAusleihbaresMediumId(buchid);
-            ausleihkontoEK.setMahnungId(mahnungId);
-            ausleihkontoEK.setVerlustId(verlustId);
-            ausleihkontoEK.setRückgabe(rückgabe);
-            ausleihkontoEK.setKundenId(id);
-            entityManager.persist(ausleihkontoEK);
-            transaction.commit();
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        Query query = entityManager.createQuery("SELECT e FROM AusleihkontoEK e WHERE e.ausleihbaresMediumId =: id");
+        query.setParameter("id",id);
+        List<AusleihkontoEK> AusleihkontoEK = query.getResultList();
+        if(!(AusleihkontoEK.size() > 0)) {
+            try {
+                transaction.begin();
+                AusleihkontoEK ausleihkontoEK = new AusleihkontoEK();
+                ausleihkontoEK.setId(getMaxPublicKeyBAusleihkonto() + 1);
+                ausleihkontoEK.setAusleihbaresMediumId(buchid);
+                ausleihkontoEK.setMahnungId(mahnungId);
+                ausleihkontoEK.setVerlustId(verlustId);
+                ausleihkontoEK.setRückgabe(rückgabe);
+                ausleihkontoEK.setKundenId(id);
+                entityManager.persist(ausleihkontoEK);
+                transaction.commit();
 
-        } catch (Exception e) {
-            System.out.println(e.getStackTrace());
-            return false;
-        } finally {
-            if (transaction.isActive()) {
-                transaction.rollback();
+            } catch (Exception e) {
+                System.out.println(e.getStackTrace());
+                return false;
+            } finally {
+                if (transaction.isActive()) {
+                    transaction.rollback();
+                }
+                entityManager.close();
+                entityManagerFactory.close();
+
             }
-            entityManager.close();
-            entityManagerFactory.close();
-
+            return true;
         }
-        return true;
+        return false;
     }
 
     public boolean upDateKonto(int id, int buchid, int mahnungId, int verlustId, boolean rückgab)
@@ -264,6 +271,7 @@ public class HilfsfunktionenK implements Operation {
         query.setParameter("rüchgabe" ,rückgab);
         query.executeUpdate();
         entityManager.getTransaction().commit();
+        entityManager.close();
         return false;
     }
 
@@ -298,6 +306,38 @@ public class HilfsfunktionenK implements Operation {
             jComboBox.addItem(allVerluste.get(i));
         }
         return jComboBox;
+    }
+
+
+
+    @Override
+    public boolean setVerlängerung(int id) {
+
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        Query query = entityManager.createQuery("SELECT e FROM AusleihkontoEK e WHERE e.ausleihbaresMediumId =: id");
+        query.setParameter("id", id);
+        List<AusleihkontoEK> result = query.getResultList();
+        if (result.size() > 0) {
+             entityManager = entityManagerFactory.createEntityManager();
+            Query query1 = entityManager.createQuery("SELECT e FROM BuecherbestandEK e WHERE e.id =: id");
+            query1.setParameter("id", id);
+            List<BuecherbestandEK> result1 = query1.getResultList();
+
+            boolean status = result1.get(0).isReserviert();
+            if (!status) {
+                entityManager.getTransaction().begin();
+                query = entityManager.createQuery("UPDATE BuecherbestandEK e SET  e.reserviert =: reserviert WHERE e.id=:id");
+                query.setParameter("id", id);
+                query.setParameter("reserviert", true);
+                query.executeUpdate();
+                entityManager.getTransaction().commit();
+                entityManager.close();
+
+                return true;
+            }
+            return false;
+        }
+        return false;
     }
 
     public int getMediumIdSelectMedium(String text)
@@ -363,6 +403,7 @@ public class HilfsfunktionenK implements Operation {
         Query query = entityManager.createQuery("Select e FROM BuecherbestandEK e WHERE e.id = :id ");
         query.setParameter("id", id);
         List<BuecherbestandEK> result = query.getResultList();
+        entityManager.close();
         return result.get(0).getBuchname();
     }
 
@@ -373,6 +414,7 @@ public class HilfsfunktionenK implements Operation {
         Query query = entityManager.createQuery("Select e FROM MahnungEK e WHERE e.id = :id ");
         query.setParameter("id", id);
         List<MahnungEK> result = query.getResultList();
+        entityManager.close();
         return result.get(0).getBeschreibung();
     }
 
@@ -383,7 +425,9 @@ public class HilfsfunktionenK implements Operation {
         Query query = entityManager.createQuery("Select e FROM VerlustmeldungEK e WHERE e.id = :id ");
         query.setParameter("id", id);
         List<VerlustmeldungEK> result = query.getResultList();
+        entityManager.close();
         return result.get(0).getBeschreibung();
+
     }
     public boolean getRückgabe(int id)
     {
@@ -412,7 +456,7 @@ public class HilfsfunktionenK implements Operation {
             text = text + getBuchname(result.get(i).getAusleihbaresMediumId()) +
             " Verlustbemerkung: " + getVerlust(result.get(i).getVerlustId()) +
             " Mahnungbemerkung: " + getMahung(result.get(i).getMahnungId()) +
-            " Reserviert: " + result.get(i).isRückgabe()+ "\n-------------------\n";
+            " Rückgabe: " + result.get(i).isRückgabe()+ "\n-------------------\n";
         }
         return text;
     }
