@@ -12,8 +12,11 @@ public class BucherstellenAAS {
     JFrame buchHinzufügenFenster = new JFrame();
     HilfsfunktionenK hilfsfunktionen = new HilfsfunktionenK();
 
+    public BucherstellenAAS() {
+        öffnen();
+    }
 
-    public void öffnen()
+    private void öffnen()
     {
     final JTextField buchname = new JTextField();
     final JTextField autor = new JTextField();

@@ -44,6 +44,7 @@ public class HilfsfunktionenK implements Operation {
         try {
 
             transaction.begin();
+            System.out.println(role);
             AuthentifzierungEK authentifzierungEK = new AuthentifzierungEK();
             authentifzierungEK.setId(getMaxPublicKeyAuthenifizerung() + 1);
             authentifzierungEK.setUsername(user);
@@ -59,9 +60,6 @@ public class HilfsfunktionenK implements Operation {
             if (transaction.isActive()) {
                 transaction.rollback();
             }
-            entityManager.close();
-            entityManagerFactory.close();
-
         }
         return true;
     }
@@ -90,8 +88,6 @@ public class HilfsfunktionenK implements Operation {
             if (transaction.isActive()) {
                 transaction.rollback();
             }
-            entityManager.close();
-            entityManagerFactory.close();
 
         }
         return true;
@@ -105,7 +101,7 @@ public class HilfsfunktionenK implements Operation {
         query.setParameter("employeeName", username);
         query.executeUpdate();
         entityManager.getTransaction().commit();
-        entityManager.close();
+     //   entityManager.close();
         return true;
     }
 
@@ -246,8 +242,8 @@ public class HilfsfunktionenK implements Operation {
                 if (transaction.isActive()) {
                     transaction.rollback();
                 }
-                entityManager.close();
-                entityManagerFactory.close();
+//                entityManager.close();
+//                entityManagerFactory.close();
 
             }
             return true;
@@ -271,7 +267,7 @@ public class HilfsfunktionenK implements Operation {
         query.setParameter("rüchgabe" ,rückgab);
         query.executeUpdate();
         entityManager.getTransaction().commit();
-        entityManager.close();
+//        entityManager.close();
         return false;
     }
 
@@ -331,7 +327,7 @@ public class HilfsfunktionenK implements Operation {
                 query.setParameter("reserviert", true);
                 query.executeUpdate();
                 entityManager.getTransaction().commit();
-                entityManager.close();
+//                entityManager.close();
 
                 return true;
             }
@@ -403,7 +399,7 @@ public class HilfsfunktionenK implements Operation {
         Query query = entityManager.createQuery("Select e FROM BuecherbestandEK e WHERE e.id = :id ");
         query.setParameter("id", id);
         List<BuecherbestandEK> result = query.getResultList();
-        entityManager.close();
+//        entityManager.close();
         return result.get(0).getBuchname();
     }
 
@@ -414,7 +410,7 @@ public class HilfsfunktionenK implements Operation {
         Query query = entityManager.createQuery("Select e FROM MahnungEK e WHERE e.id = :id ");
         query.setParameter("id", id);
         List<MahnungEK> result = query.getResultList();
-        entityManager.close();
+     //   entityManager.close();
         return result.get(0).getBeschreibung();
     }
 
@@ -425,7 +421,7 @@ public class HilfsfunktionenK implements Operation {
         Query query = entityManager.createQuery("Select e FROM VerlustmeldungEK e WHERE e.id = :id ");
         query.setParameter("id", id);
         List<VerlustmeldungEK> result = query.getResultList();
-        entityManager.close();
+     //   entityManager.close();
         return result.get(0).getBeschreibung();
 
     }

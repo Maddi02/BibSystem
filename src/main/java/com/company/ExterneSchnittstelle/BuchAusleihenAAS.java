@@ -18,7 +18,13 @@ public class BuchAusleihenAAS extends JFrame {
     int buchID;
     JScrollPane jScrollPane;
 
-    public void öffne() {
+    public BuchAusleihenAAS()
+    {
+        öffne();
+    }
+
+
+    private void öffne() {
 
         GridBagConstraints z = new GridBagConstraints();
         z.gridx = 0;

@@ -18,8 +18,6 @@ public class MitarbeiterAS {
 
     Action benutzerErstellenAction = new AbstractAction("Benutzer erstellen") {
         public void actionPerformed(ActionEvent e) {
-
-            erstellen.öffne();
             MitareiterFenster.setContentPane(erstellen.getPanel());
             SwingUtilities.updateComponentTreeUI(MitareiterFenster);
         }
@@ -28,7 +26,6 @@ public class MitarbeiterAS {
     Action buchErstellenAction = new AbstractAction("Buch hinzufügen") {
         @Override
         public void actionPerformed(ActionEvent e) {
-            buchErstellen.öffnen();
             MitareiterFenster.setContentPane(buchErstellen.getPanel());
             SwingUtilities.updateComponentTreeUI(MitareiterFenster);
         }
@@ -37,8 +34,6 @@ public class MitarbeiterAS {
     Action benutzerLöschenAction = new AbstractAction("Benutzer löschen") {
         @Override
         public void actionPerformed(ActionEvent e) {
-
-            benutzerLöschen.öffnen();
             MitareiterFenster.setContentPane(benutzerLöschen.getPanel());
             SwingUtilities.updateComponentTreeUI(MitareiterFenster);
         }
@@ -49,7 +44,6 @@ public class MitarbeiterAS {
         public void actionPerformed(ActionEvent e) {
 
 
-            benutzerkontoModifizierenAAS.öffne();
             MitareiterFenster.setContentPane(BenutzerkontoModifizierenAAS.getjPanel());
             SwingUtilities.updateComponentTreeUI(MitareiterFenster);
 

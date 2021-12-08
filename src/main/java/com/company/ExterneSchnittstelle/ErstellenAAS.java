@@ -6,6 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Enumeration;
 
 public class ErstellenAAS {
 
@@ -14,7 +15,12 @@ public class ErstellenAAS {
     HilfsfunktionenK hilfsfunktionen = new HilfsfunktionenK();
     private String Role = "";
 
-    public void öffne ()
+
+    public ErstellenAAS() {
+        öffne();
+    }
+
+    private void öffne ()
     {
         final JTextField username = new JTextField();
         final JTextField passwort = new JTextField();
@@ -25,6 +31,9 @@ public class ErstellenAAS {
         final JCheckBox jCheckBox1 = new JCheckBox("Student");
         buttonGroup.add(jCheckBox);
         buttonGroup.add(jCheckBox1);
+
+
+
 
         JButton OK = new JButton();
         OK.setText("OK");
@@ -51,12 +60,15 @@ public class ErstellenAAS {
 
 
 
+
+
         OK.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
                 JDialogSetUP jDialogSetUP = new JDialogSetUP();
-                if(hilfsfunktionen.benutzerAnlegen(username.getText().toString(), passwort.getText().toString(), Role))
+                System.out.println("Role" + Role);
+                if(hilfsfunktionen.benutzerAnlegen(username.getText().toString(), passwort.getText().toString(), getSelectedButtonText(buttonGroup)))
                 {
                     jDialogSetUP.setUpADialog("Erstellung war erflogreich", "SUCCESS!!!").pack();
                 }
@@ -66,7 +78,16 @@ public class ErstellenAAS {
             }
         });
     }
+    public String getSelectedButtonText(ButtonGroup buttonGroup) {
+        for (Enumeration<AbstractButton> buttons = buttonGroup.getElements(); buttons.hasMoreElements(); ) {
+            AbstractButton button = buttons.nextElement();
 
+            if (button.isSelected()) {
+                return button.getText();
+            }
+        }
+        return null;
+    };
     public static JPanel getPanel() {
         return panel;
     }

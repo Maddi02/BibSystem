@@ -11,7 +11,11 @@ public class BenutzerLöschenASS {
     JPanel jPanel = new JPanel();
     HilfsfunktionenK hilfsfunktionen = new HilfsfunktionenK();
 
-    public void öffnen(){
+    public BenutzerLöschenASS() {
+        öffnen();
+    }
+
+    private void öffnen(){
         jPanel.setLayout(new GridLayout(4, 2));
 
 

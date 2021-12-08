@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 
 public class BibliotheksystemHS extends JFrame {
 
+    LoginASS login = new LoginASS();
     public BibliotheksystemHS()
     {
 

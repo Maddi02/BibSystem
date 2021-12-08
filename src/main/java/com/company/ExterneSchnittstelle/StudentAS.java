@@ -6,7 +6,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
 public class StudentAS {
-
+    ShowAusleikonto showAusleihkontoObject =  new ShowAusleikonto();
+    BuchAusleihenAAS buchAusleihenAAS =  new BuchAusleihenAAS();
     String role= "";
     JFrame studentenFenster = new JFrame("Bibliothek Verwaltung - Student");
     JToolBar jToolBar = new JToolBar();
@@ -16,8 +17,6 @@ public class StudentAS {
     Action buchAusleihenAction = new AbstractAction("Buch ausleihen") {
         @Override
         public void actionPerformed(ActionEvent e) {
-           BuchAusleihenAAS buchAusleihenAAS =  new BuchAusleihenAAS();
-           buchAusleihenAAS.öffne();
            studentenFenster.setContentPane(buchAusleihenAAS.getPanel());
             SwingUtilities.updateComponentTreeUI(studentenFenster);
         }
@@ -26,10 +25,7 @@ public class StudentAS {
     Action showAusleihkonto = new AbstractAction("Ausleihkonten anzeigen") {
         @Override
         public void actionPerformed(ActionEvent e) {
-
-            ShowAusleikonto showAusleihkonto =  new ShowAusleikonto();
-            showAusleihkonto.showAusleihkonto();
-            studentenFenster.setContentPane(ShowAusleikonto.getjPanel());
+            studentenFenster.setContentPane(showAusleihkontoObject.getjPanel());
             SwingUtilities.updateComponentTreeUI(studentenFenster);
         }
     };

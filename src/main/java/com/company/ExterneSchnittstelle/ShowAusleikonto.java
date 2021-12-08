@@ -10,6 +10,13 @@ public class ShowAusleikonto extends JFrame {
     JTextArea jTextArea = new JTextArea();
     HilfsfunktionenK hilfsfunktionen = new HilfsfunktionenK();
 
+
+    ShowAusleikonto()
+    {
+        showAusleihkonto();
+    }
+
+
     public void showAusleihkonto()
     {
         jPanel.add(jTextArea);

@@ -16,7 +16,14 @@ public class BenutzerkontoModifizierenAAS extends JFrame {
     final String[] ausgewählterVerlust = {"alles gut"};
     final String[] ausgewälterNutzer = {"b"};
     boolean rückgabe = false;
-    public void öffne()
+
+
+    public BenutzerkontoModifizierenAAS() {
+        öffne();
+    }
+
+
+    private void öffne()
     {
         jPanel.setLayout(new GridBagLayout());
 
